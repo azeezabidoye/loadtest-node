@@ -14,8 +14,8 @@ jobs:
         - run: 
           name: Run Node Test
           command: |
-          sudo app-get update
-          sudo app-get install apache2-utils
+          app-get update
+          app-get install apache2-utils
           ab -k -c 20 -n 250 https://LOADTEST_NODEJS.herokuapp.com/users/get
 
 orbs:
