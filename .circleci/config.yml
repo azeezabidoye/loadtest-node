@@ -1,0 +1,30 @@
+jobs: 
+  build:
+    executor: heroku/default
+    steps:
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git
+
+  loadtestapi: 
+    docker:
+      - image: circleci/node:10.16.3
+
+      steps:
+        - run: 
+          name: Run Node Test
+          command: |
+          sudo app-get update
+          sudo app-get install apache2-utils
+          ab -k -c 20 -n 250 https://LOADTEST_NODEJS.herokuapp.com/users/get
+
+orbs:
+  heroku: circleci/heroku@0.0.10
+  version: 2.1
+  workflows: 
+    deploy:
+      jobs:
+        - build
+        - loadapitest:
+          requires:
+            - build
